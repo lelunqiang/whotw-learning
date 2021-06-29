@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.whotw</groupId>
+        <artifactId>whotw-learning</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>whotw-discovery-client</artifactId>
+    <packaging>pom</packaging>
+    <name>Whotw Discovery Client</name>
+    <description>服务发现及注册API及相关配置的封装，项目其他服务直接依赖该POM，方便直接在该pom里更换API，而不用修改其他项目</description>
+
+    <modules>
+        <module>discovery-client-starter-nacos</module>
+    </modules>
+    
+</project>

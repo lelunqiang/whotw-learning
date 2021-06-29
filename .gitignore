@@ -1,0 +1,12 @@
+# Project exclude paths
+/whotw-business/whotw-sample/target/
+/whotw-common/whotw-common-data/target/
+/whotw-common/whotw-common-spring-boot-starter/target/
+/whotw-common/whotw-distribute-utils-spring-boot-starter/${project.build.directory}/classes/
+/whotw-common/whotw-distribute-utils-spring-boot-starter/target/
+/whotw-common/whotw-mysql-spring-boot-starter/target/
+/whotw-common/whotw-redis-spring-boot-starter/target/
+/whotw-common/whotw-security-api/target/
+/whotw-common/whotw-swagger-spring-boot-starter/${project.build.directory}/classes/
+/whotw-common/whotw-swagger-spring-boot-starter/target/
+/whotw-uaa/target/

@@ -1,0 +1,40 @@
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+spring:
+  application:
+    name: service-sample
+  profiles:
+    active: #spring.profiles.active#
+  data:
+    mongodb:
+      #uri: mongodb://test:123456@118.31.108.233:27017/test
+      uri: mongodb://test:123456@127.0.0.1:27017/test
+  main:
+    banner-mode:
+# ===================================================================
+# Application specific properties
+# Add your own application properties here, see the ApplicationProperties class
+# to have type-safe configuration, like in the JHipsterProperties above
+#
+# More documentation is available at:
+# http://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        timeout: 28800
+  max-http-header-size: 10MB  #权限的Header很大，超过了默认的8KB，这里放大，否则会直接400错误
+
+info:
+  project:
+    version: #project.version#
+    description:
+
+

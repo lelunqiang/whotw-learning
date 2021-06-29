@@ -1,0 +1,42 @@
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+spring:
+  application:
+    name: service-uaa
+  profiles:
+    #此方式要以mvn clean install -Dmaven.test.skip -Pdev & java -jar方式启动
+    #为啥或想要idea启动看这whowt-learning/doc/application.adoc
+    active: #spring.profiles.active#
+
+  main:
+    banner-mode:
+
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        timeout: 28800
+  max-http-header-size: 10MB  #权限的Header很大，超过了默认的8KB，这里放大，否则会直接400错误
+
+info:
+  project:
+    version: #project.version#
+
+whotw:
+  jwt:
+    secret: 6bef8a51883f9eb381095a3003acz3dd97f9f38687b31x5ba6003f2ea2552b78
+    base64Secret: NmJlZjhhNTE4ODNmOWViMzgxMDk1YTMwMDNhY3ozZGQ5N2Y5ZjM4Njg3YjMxeDViYTYwMDNmMmVhMjU1MmI3OA==
+  security:
+    oauth2:
+      token-store: jwt
+      jwt-sign-key: NmJlZjhhNTE4ODNmOWViMzgxMDk1YTMwMDNhY3ozZGQ5N2Y5ZjM4Njg3YjMxeDViYTYwMDNmMmVhMjU1MmI3OA==
+    permission-check:
+      enabled: true
+      local: true #本地执行而不是远程调用
+      url-patterns: /api/** ,/management/**,/register/** #逗号分隔
+#      exclude-url-patterns:

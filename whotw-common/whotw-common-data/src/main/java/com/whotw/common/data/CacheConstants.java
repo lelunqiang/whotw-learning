@@ -1,0 +1,51 @@
+package com.whotw.common.data;
+
+/**
+ * @author EdisonXu
+ * @date 2019-12-23
+ */
+public interface CacheConstants {
+
+    long WAIT_TIME_IN_SECONDS = 3;
+    long TIME_BEFORE_AUTO_RELEASE_AFTER_LOCKED_IN_SECONDS = 2;
+
+    String CACHE_KEY_PREFIX_PAY_ORDER = "po_";
+
+    String CACHE_KEY_PREFIX_INST_PAY_INFO = "ipi_";
+
+    String CACHE_KEY_PREFIX_QR_PAY = "qrp_";
+
+    String CACHE_KEY_PREFIX_RESOURCE_PERMISSION_PAGE = "rpp_";
+
+    String CACHE_KEY_PREFIX_RESOURCE_PERMISSION_MAP_PAGE = "rpmp_";
+
+    String CACHE_KEY_PREFIX_RESOURCE_PERMISSION_SERVICE = "rps_";
+
+    String CACHE_KEY_PREFIX_RESOURCE_PERMISSION_MAP_SERVICE = "rpms_";
+
+    String CACHE_KEY_INST_CLIENT_BINDING = "icib";
+
+    String CACHE_KEY_PARENT_CLIENT_BINDING = "pcib";
+
+    String CACHE_KEY_PREFIX_MARKETING_ACTIVITY_VIEWS = "pmav";
+
+    String CACHE_KEY_PREFIX_WX_OPEN_INFO = "pwoi";
+
+    String CACHE_KEY_MARKETING_ACTIVITY_TOTAL_VIEWS = "matv";
+
+    String CACHE_KEY_PREFIX_MARKETING_ACTIVITY_TEMPLATE_VIEWS = "pmav";
+
+    // 团购活动剩余可成团数量
+    String CACHE_KEY_GROUPED_BUY_ACTIVITY_GROUP_BALANCE = "gbagb";
+
+    // 团购活动单个团剩余报名人数
+    String CACHE_KEY_GROUPED_BUY_ACTIVITY_GROUP_ENROLLMENT_BALANCE = "gbageb";
+
+    // 营销活动已报人数
+    String CACHE_KEY_MARKETING_ACTIVITY_ENROLLMENT= "mae";
+
+    String CACHE_KEY_MARKETING_ACTIVITY_GROUP_LOCK = "agl";
+
+    String CACHE_KEY_MARKETING_ACTIVITY_LOCK = "mal";
+
+}

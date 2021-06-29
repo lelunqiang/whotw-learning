@@ -1,0 +1,147 @@
+# ===================================================================
+# Spring Boot configuration for the "dev" profile.
+#
+# This configuration overrides the application.yml file.
+#
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+spring:
+    profiles:
+        active: dev
+        include: swagger
+    devtools:
+        restart:
+            enabled: true
+        livereload:
+            enabled: false # we use gulp + BrowserSync for livereload
+    jackson:
+        serialization.indent_output: true
+    datasource:
+        type: com.zaxxer.hikari.HikariDataSource
+        url: jdbc:mysql://192.168.1.37:3306/xsh?rewriteBatchedStatements=true&useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: root
+        password: qingshi123
+        driver-class-name: com.mysql.jdbc.Driver
+        test-on-borrow: false #获取连接时候验证，会影响性能
+        test-while-idle: true #验证连接的有效性
+        time-between-eviction-runs-millis: 3600000 #空闲连接回收的时间间隔，与test-while-idle一起使用，设置5分钟
+        hikari:
+            maximumPoolSize: 50
+            data-source-properties:
+                cachePrepStmts: true
+                prepStmtCacheSize: 250
+                prepStmtCacheSqlLimit: 2048
+                useServerPrepStmts: true
+    datasource2:
+        type: com.zaxxer.hikari.HikariDataSource
+        url: jdbc:mysql://192.168.1.37:3306/chimestone?rewriteBatchedStatements=true&useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: root
+        password: qingshi123
+        driver-class-name: com.mysql.jdbc.Driver
+        test-on-borrow: false #获取连接时候验证，会影响性能
+        test-while-idle: true #验证连接的有效性
+        time-between-eviction-runs-millis: 3600000 #空闲连接回收的时间间隔，与test-while-idle一起使用，设置5分钟
+        hikari:
+            maximum-pool-size: 20
+            data-source-properties:
+                cachePrepStmts: true
+                prepStmtCacheSize: 250
+                prepStmtCacheSqlLimit: 2048
+                useServerPrepStmts: true
+    jpa:
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        database: MYSQL
+        show-sql: true
+        properties:
+            hibernate.id.new_generator_mappings: true
+            hibernate.cache.use_second_level_cache: true
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: true
+            hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
+            hibernate.order_inserts: true
+            hibernate.order_updates: true
+    data:
+        elasticsearch:
+            ip: 192.168.1.37
+            port: 9200
+            data-sync: false
+    mail:
+        host: localhost
+        port: 25
+        username:
+        password:
+    messages:
+        cache-seconds: 1
+    thymeleaf:
+        cache: false
+    session:
+        store-type: redis
+    redis:
+         host: 122.152.212.239
+         database: 0
+         password: qingshi@123
+         port: 6379
+
+liquibase:
+    contexts: dev
+
+# ===================================================================
+# To enable SSL, generate a certificate using:
+# keytool -genkey -alias xsh -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
+#
+# You can also use Let's Encrypt:
+# https://maximilian-boehm.com/hp2121/Create-a-Java-Keystore-JKS-from-Let-s-Encrypt-Certificates.htm
+#
+# Then, modify the server.ssl properties so your "server" configuration looks like:
+#
+# server:
+#    port: 8443
+#    ssl:
+#        key-store: keystore.p12
+#        key-store-password: <your-password>
+#        keyStoreType: PKCS12
+#        keyAlias: xsh
+# ===================================================================
+server:
+    port: 8080
+
+# ===================================================================
+# Xsh specific properties
+#
+# ===================================================================
+
+xsh:
+    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
+        jmx.enabled: true
+        graphite: # Use the "graphite" Maven profile to have the Graphite dependencies
+            enabled: false
+            host: localhost
+            port: 2003
+            prefix: xsh
+        prometheus: # Use the "prometheus" Maven profile to have the Prometheus dependencies
+            enabled: false
+            endpoint: /prometheusMetrics
+        logs: # Reports Dropwizard metrics in the logs
+            enabled: false
+            report-frequency: 60 # in seconds
+    logging:
+        logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+            enabled: false
+            host: localhost
+            port: 5000
+            queue-size: 512
+
+# ===================================================================
+# Application specific properties
+# Add your own application properties here, see the ApplicationProperties class
+# to have type-safe configuration, like in the JHipsterProperties above
+#
+# More documentation is available at:
+# http://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+application:

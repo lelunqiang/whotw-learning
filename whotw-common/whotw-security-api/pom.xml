@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>whotw-common</artifactId>
+    <groupId>com.whotw</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>whotw-security-api</artifactId>
+  <packaging>jar</packaging>
+  <name> Security API</name>
+  <description>安全相关的独立API（脱离SpringBoot）</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.whotw</groupId>
+      <artifactId>whotw-common-data</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>

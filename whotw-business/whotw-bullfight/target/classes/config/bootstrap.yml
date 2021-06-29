@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: service-sample
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      config:
+        # ===============关闭namespace,group 默认读取public命名空间中DEFAULT_GROUP分组中的文件====================
+        #namespace: ${spring.application.name}  #命名空间id,默认读取nacos public命名空间中的文件
+        #group: ${spring.profiles.active} #读取nacos.namespace 某个分组文件,不设置分组名默认读取DEFAULT_GROUP分组文件
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yaml  #文件格式
+      discovery:
+        server-addr: ${NACOS-HOST:localhost}:${NACOS-PORT:8848}
+server:
+  port: 9999

@@ -1,0 +1,29 @@
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+spring:
+  application:
+    name: service-sample
+  profiles:
+    active: #spring.profiles.active#
+
+  main:
+    banner-mode:
+
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        timeout: 28800
+  max-http-header-size: 10MB  #权限的Header很大，超过了默认的8KB，这里放大，否则会直接400错误
+
+info:
+  project:
+    version: #project.version#
+    description:
+
+

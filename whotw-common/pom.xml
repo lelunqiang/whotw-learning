@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>whotw-learning</artifactId>
+        <groupId>com.whotw</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>whotw-common</artifactId>
+    <packaging>pom</packaging>
+    <description>项目内部通用封装</description>
+    <modules>
+        <!-- 根据https://docs.spring.io/spring-boot/docs/2.0.9.RELEASE/reference/htmlsingle/#boot-features-custom-starter-naming
+             官方建议非官方starter命名方式为 {name}-spring-boot-starter
+        -->
+        <!-- 公共数据类 -->
+        <module>whotw-common-data</module>
+        <!-- 独立工具API封装 -->
+        <module>whotw-common-spring-boot-starter</module>
+        <!-- SpringBoot swagger相关配置或API封装 -->
+        <module>whotw-swagger-spring-boot-starter</module>
+        <!-- SpringBoot mysql相关配置或API封装-->
+        <module>whotw-mysql-spring-boot-starter</module>
+        <!-- SpringBoot通用相关配置或API封装 -->
+        <!-- SpringBoot统一配置日志 -->
+        <!-- SpringBoot Redis相关配置或API封装 -->
+        <module>whotw-redis-spring-boot-starter</module>
+        <module>whotw-distribute-utils-spring-boot-starter</module>
+        <module>whotw-security-api</module>
+        <!-- SpringBoot Sentinel相关配置或API封装 -->
+        <!-- SpringBoot 认证授权相关配置或API封装 -->
+        <module>whotw-security-spring-boot-starter</module>
+        <!-- 短信服务相关配置和API封装-->
+    </modules>
+</project>

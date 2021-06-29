@@ -1,0 +1,89 @@
+# ===================================================================
+# Spring Boot configuration for the "dev" profile.
+#
+# This configuration overrides the application.yml file.
+#
+# More information on profiles: https://www.jhipster.tech/profiles/
+# More information on configuration properties: https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+logging:
+  level:
+    ROOT: INFO
+    com.xsh: DEBUG
+    org.springframework: DEBUG
+
+spring:
+  profiles:
+    active: dev
+    include: swagger
+  jackson:
+    serialization.indent_output: true
+  #domain:
+  #    mongodb:
+  #        uri: mongodb://localhost:27017
+  #        database: auth
+  messages:
+    cache-duration: PT1S # 1 second, see the ISO 8601 standard
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+      routes:
+        - id: uaa-route
+          uri: lb://service-uaa
+          predicates:
+            - Path=/api/demo/**
+
+      discovery:
+        locator:
+          enabled: false
+      default-filters:
+        - SwaggerStripPrefixFilter
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+
+# ===================================================================
+# To enable SSL, generate a certificate using:
+# keytool -genkey -alias auth -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
+#
+# You can also use Let's Encrypt:
+# https://maximilian-boehm.com/hp2121/Create-a-Java-Keystore-JKS-from-Let-s-Encrypt-Certificates.htm
+#
+# Then, modify the server.ssl properties so your "server" configuration looks like:
+#
+# server:
+#    port: 8443
+#    ssl:
+#        key-store: keystore.p12
+#        key-store-password: <your-password>
+#        key-store-type: PKCS12
+#        key-alias: auth
+# ===================================================================
+server:
+  port: 8080
+
+# ===================================================================
+# Application specific properties
+# Add your own application properties here, see the XshProperties class
+# to have type-safe configuration, like in the JHipsterProperties above
+#
+# More documentation is available at:
+# https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+# application:
+xsh:
+  security:
+    oauth2:
+      token-store: jwt
+      jwt-sign-key: NmJlZjhhNTE4ODNmOWViMzgxMDk1YTMwMDNhY3ozZGQ5N2Y5ZjM4Njg3YjMxeDViYTYwMDNmMmVhMjU1MmI3OA==

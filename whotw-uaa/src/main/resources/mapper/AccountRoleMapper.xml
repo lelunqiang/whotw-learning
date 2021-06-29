@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whotw.uaa.mapper.AccountRoleRepository">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.whotw.uaa.entity.AccountRoleEntity">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="institution_id" property="institutionId" />
+        <result column="institution_name" property="institutionName"/>
+        <result column="dept_id" property="deptId" />
+        <result column="parent_id" property="parentId" />
+        <result column="root_id" property="rootId" />
+        <result column="permission_sum" property="permissionSum" />
+        <result column="created_by" property="createdBy" />
+        <result column="created_time" property="createdTime" />
+        <result column="last_updated_by" property="lastUpdatedBy" />
+        <result column="last_updated_time" property="lastUpdatedTime" />
+    </resultMap>
+
+    <resultMap id="roleWithFunctionEndpointsResultMap" type="com.whotw.uaa.rest.vo.AccountRoleVO">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="institution_id" property="institutionId" />
+        <result column="institution_name" property="institutionName"/>
+        <result column="dept_id" property="deptId" />
+        <result column="parent_id" property="parentId" />
+        <result column="root_id" property="rootId" />
+        <result column="permission_sum" property="permissionSum" />
+        <result column="created_by" property="createdBy" />
+        <result column="created_time" property="createdTime" />
+        <result column="last_updated_by" property="lastUpdatedBy" />
+        <result column="last_updated_time" property="lastUpdatedTime" />
+
+        <collection property="functionEndpoints" column="id" select="com.whotw.uaa.mapper.FunctionEndpointRepository.listByRoleIdWithResources"/>
+    </resultMap>
+
+    <select id="listAll" resultType="com.whotw.uaa.rest.vo.AccountRoleVO">
+        SELECT DISTINCT ar.*
+        FROM account_role ar
+        <if test="query!=null and query.functionEndpointIds!=null and query.functionEndpointIds.size()>0">
+        LEFT JOIN role_function_binding rfb ON rfb.role_id=ar.id
+        </if>
+        <where>
+        <if test="onlyRoot==true">
+            ar.root_id IS NULL
+        </if>
+        <if test="query!=null">
+            <if test="query.institutionId!=null">
+                AND ar.institution_id=#{query.institutionId}
+            </if>
+            <if test='query.institutionName!=null and query.institutionName!=""'>
+                AND ar.institution_name LIKE CONCAT(#{query.institutionName},'%')
+            </if>
+            <if test="query.deptId!=null">
+                AND ar.dept_id=#{query.deptId}
+            </if>
+            <if test="query.parentId!=null">
+                AND ar.parent_id=#{query.parentId}
+            </if>
+            <if test='query.roleNameQueryStr!=null and query.roleNameQueryStr!=""'>
+                AND ar.name LIKE CONCAT('%',#{query.roleNameQueryStr},'%')
+            </if>
+            <if test="query!=null and query.functionEndpointIds!=null and query.functionEndpointIds.size()>0">
+                AND rfb.function_endpoint_id IN
+                <foreach collection="query.functionEndpointIds" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </if>
+        </where>
+        ORDER BY ar.last_updated_by, ar.institution_id
+    </select>
+
+    <select id="findByRootId" resultType="com.whotw.uaa.rest.vo.AccountRoleVO">
+        SELECT *
+        FROM account_role
+        WHERE root_id IN
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="findRoleByAccountId" resultType="com.whotw.uaa.entity.AccountRoleEntity">
+        SELECT r.id, r.name, r.parent_id, r.root_id
+        FROM account_role r
+        LEFT JOIN account_role_binding arb ON arb.role_id=r.id
+        WHERE arb.account_id=#{accountId}
+    </select>
+
+
+    <select id="findDefaultRoles" resultType="com.whotw.uaa.entity.AccountRoleEntity">
+        SELECT *
+        FROM account_role
+        WHERE
+        institution_id = 1
+        AND
+        `name` IN
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        ORDER BY id
+    </select>
+
+    <select id="listSimpleInfoOfDefaultRoles" resultType="com.whotw.uaa.entity.AccountRoleEntity">
+        SELECT id, `name`
+        FROM account_role
+        WHERE institution_id = 1
+    </select>
+
+    <update id="batchUpdateRootId">
+        UPDATE account_role SET root_id = #{rootId}
+        WHERE id IN
+        <foreach collection="children" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="listPermissionByRoleId" resultType="com.whotw.uaa.rest.vo.RolePermissionVO">
+        SELECT fe.id, fe.name, fe.root_id, fe.parent_id, IF(r.id IS NULL, FALSE, TRUE) AS has_permission
+        FROM function_endpoints fe
+        LEFT JOIN role_function_binding rfb ON rfb.function_endpoint_id=fe.id AND rfb.role_id=#{roleId}
+        LEFT JOIN account_role r ON r.id=rfb.role_id
+        WHERE fe.customizable IS TRUE
+    </select>
+
+
+    <select id="listWithFunctionsAndResources" resultMap="roleWithFunctionEndpointsResultMap">
+        SELECT *
+        FROM account_role
+        <where>
+        <if test="name!=null">
+            `name`=#{name}
+        </if>
+        </where>
+    </select>
+
+</mapper>

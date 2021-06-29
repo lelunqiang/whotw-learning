@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whotw.uaa.mapper.ResourceEndpointRepository">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.whotw.uaa.entity.ResourceEndpointEntity">
+        <id column="id" property="id" />
+        <result column="type" property="type" />
+        <result column="description" property="description" />
+        <result column="method" property="method" />
+        <result column="url" property="url" />
+        <result column="permission_idx" property="permissionIdx" />
+        <result column="permission_pos" property="permissionPos" />
+        <result column="created_time" property="createdTime" />
+    </resultMap>
+
+    <insert id="insertDefaultValue">
+        INSERT IGNORE INTO resource_endpoints VALUES('1', 0, '初始化用占位资源点','','/',1,0, NOW(), false)
+    </insert>
+
+    <!--此处使用MYSQL自己的INSERT SELECT来避免分布式锁的问题，但是如果当前表是空，则无法使用，所以必须在启动时检查并插入一条初始化的记录-->
+    <insert id="insertWithGeneratedPermissionValue">
+        INSERT INTO resource_endpoints
+        SELECT #{id} AS id, #{type} AS `type`, #{description} AS description, #{method} AS method, #{url} AS url,
+        IF(ABS(t.permission_idx)='4611686018427387904', 1, t.permission_idx &lt;&lt; 1) AS permission_idx,
+        IF(ABS(t.permission_idx)='4611686018427387904', t.permission_pos+1, permission_pos) AS permission_pos,
+        #{createdTime} AS created_time, #{allowAnonymous} AS allow_anonymous
+        FROM (
+            SELECT id, permission_pos, permission_idx
+            FROM resource_endpoints
+            ORDER BY permission_pos DESC, permission_idx DESC
+            LIMIT 1
+        ) t
+    </insert>
+
+    <select id="list" resultType="com.whotw.uaa.entity.ResourceEndpointEntity">
+        SELECT *
+        FROM resource_endpoints
+        <where>
+            <if test="description!=null">
+                description LIKE concat('%', #{description}, '%')
+            </if>
+            <if test="url!=null">
+                AND url LIKE concat(#{url}, '%')
+            </if>
+            <if test="method!=null">
+                AND method=#{method}
+            </if>
+            <if test="type!=null">
+                AND `type`=#{type}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByFunctionId" resultType="com.whotw.uaa.entity.ResourceEndpointEntity">
+        SELECT DISTINCT re.*
+        FROM resource_endpoints re
+        LEFT JOIN function_resource_binding frb ON frb.resource_endpoint_id=re.id
+        WHERE frb.function_endpoint_id=#{id}
+    </select>
+</mapper>
